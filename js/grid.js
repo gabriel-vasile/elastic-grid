@@ -36,8 +36,13 @@ ElasticGrid = (function() {
             stage.interactive = true;
             renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
                 antialias: true,
-                forceFXAA: false
+                forceFXAA: true,
+                resolution: window.devicePixelRatio
             });
+            //renderer.view.width = renderer.view.width/2
+            //renderer.view.height = renderer.view.height/2
+            console.log(renderer.view)
+            console.log(window.innerHeight)
             document.body.appendChild(renderer.view);
             window.addEventListener('resize', handleWindowResize)
             createCorners(horizontalTiles, verticalTiles)
@@ -70,14 +75,15 @@ ElasticGrid = (function() {
                     texts[i][j] = createText(i, j);
                     fixPositions(i, j);
                     geoms[i][j].mouseover = geoms[i][j].touchstart = handleFocus;
-                    geoms[i][j].mouseout = geoms[i][j].touchend = handleLostFocus
+                    geoms[i][j].mouseout = geoms[i][j].touchend = geoms[i][j].touchendoutside = handleLostFocus
+
+
                     geoms[i][j].addChild(icons[i][j]);
                     geoms[i][j].addChild(texts[i][j]);
                     stage.addChild(geoms[i][j])
                 }
             }
         }
-
         function redrawTiles(i, j) {
             var graphics = [geoms[i][j], geoms[i - 1] && geoms[i - 1][j - 1] ? geoms[i - 1][j - 1] : undefined, geoms[i - 1] && geoms[i - 1][j] ? geoms[i - 1][j] : undefined, geoms[i - 1] && geoms[i - 1][j + 1] ? geoms[i - 1][j + 1] : undefined, geoms[i] && geoms[i][j + 1] ? geoms[i][j + 1] : undefined, geoms[i + 1] && geoms[i + 1][j + 1] ? geoms[i + 1][j + 1] : undefined, geoms[i + 1] && geoms[i + 1][j] ? geoms[i + 1][j] : undefined, geoms[i + 1] && geoms[i + 1][j - 1] ? geoms[i + 1][j - 1] : undefined, geoms[i] && geoms[i][j - 1] ? geoms[i][j - 1] : undefined, ],
                 k;
@@ -267,6 +273,9 @@ ElasticGrid = (function() {
         }
 
         function createIcon(i, j) {
+            var iconPath = window.devicePixelRation > 1 ?
+                            './img/' + iconSources[iconsCounter % 10] + '.png' :
+                            './img/' + iconSources[iconsCounter % 10] + '@x2.png'
             var icon = new PIXI.Sprite(new PIXI.Texture.fromImage('./img/' + iconSources[iconsCounter % 10] + '.png'))
             icon.anchor.x = icon.anchor.y = .5;
             icon.scale.x = icon.scale.y = .6;
@@ -341,7 +350,8 @@ ElasticGrid = (function() {
                 delay: 0.15
             }
             textNewPos.onUpdate = function() {
-                texts[tileRow][tileCol].scale.x = texts[tileRow][tileCol].scale.y = textNewPos.tScale;
+                texts[tileRow][tileCol].scale.x = 
+                texts[tileRow][tileCol].scale.y = textNewPos.tScale;
             }
             if (tileCol === 0) {
                 iconNewPos.x = points[tileRow][tileCol].x + halfTileWidth + displacement.x
@@ -371,7 +381,6 @@ ElasticGrid = (function() {
                 }
             }
         }
-
         function tileUnfocused(tileRow, tileCol) {
             geoms[tileRow][tileCol].currentPath.fillColor = 14540253;
             extendGraphic(tileRow, tileCol, 0, 0);
