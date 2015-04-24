@@ -1,7 +1,7 @@
 
 ElasticGrid = (function() {
     var iconSources     = ["batteryfull", "brightness", "calculator", "check", "computer", "cursor", "dev", "frames", "profile", "tablet"],
-        messages        = ["Elastic layout grid.", "No CSS, all Javascript.", "Can be used to display testimonials.", "Or maybe as an image gallery.", "Uses Pixi.js so it works on most devices.", "Adjust number of rows and columns.", "Or let it guess the best settings.", "Hipster ipsum dolor sit amet."],
+        messages        = ["Elastic layout grid.", "No CSS, all Javascript.", "Can be used to display testimonials.", "Or maybe as an image gallery.", "Uses Pixi.js so it works on most devices.", "Adjust number of rows and columns.", "Or use the default settings.", "Hipster ipsum dolor sit amet."],
         icons           = [],
         points          = [],
         geoms           = [],
@@ -36,7 +36,7 @@ ElasticGrid = (function() {
             stage.interactive = true;
             renderer = PIXI.autoDetectRenderer(window.innerWidth, window.innerHeight, {
                 antialias: true,
-                forceFXAA: true,
+                //forceFXAA: true, //makes text blurry
                 resolution: window.devicePixelRatio
             });
             //renderer.view.width = renderer.view.width/2
