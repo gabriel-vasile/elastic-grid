@@ -1,4 +1,4 @@
 # elastic-grid
 interactive grid in canvas
 
-* [View live](http://vasilegabriel.github.io/elastic-grid/index.html)
+* [View live](http://gabriel-vasile.github.io/elastic-grid/index.html)
